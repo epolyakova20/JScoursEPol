@@ -12,8 +12,8 @@ console.log(typeof adaptive);
 
 console.log(screens.length);
 
-console.log("Стоимость верстки экранов {screenPrice} руб");
-console.log("Стоимость разработки сайта {fullPrice} руб");
+console.log(`Стоимость верстки экранов ${screenPrice} руб`);
+console.log(`Стоимость разработки сайта ${fullPrice} руб`);
 
 let screensLower = screens.toLowerCase();
 let screensArray = screensLower.split(", ");
