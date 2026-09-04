@@ -1,8 +1,8 @@
 const title = "   КаЛьКулятор Верстки";
 const screens = "Шапка, Контент, Футер";
-const screenPrice = 5000;
 const adaptive = true;
 const rollback = 10; // процент отката посреднику
+
 
 const showTypeOf = (variable) => console.log(typeof variable);
 const getRollbackMessage = (price) => {
@@ -11,33 +11,54 @@ const getRollbackMessage = (price) => {
     return "Скидка не предусмотрена";
 };
 
+
+const getNumberInput = (message) => {
+    let input;
+    do {
+        input = prompt(message);
+        if (input === null) {
+            input = "";
+        }
+        input = input.trim();
+    } while (input === "" || isNaN(Number(input)));
+    
+    return Number(input);
+};
+
+
 // === ВЫПОЛНЕНИЕ ЗАДАНИЙ ===
 
 // 1)
+let screenPrice = getNumberInput("Сколько будет стоить верстка проекта (screenPrice)?");
+
+
+// 2)
 const getAllServicePrices = function() {
-    const servicePrice1 = 1000; 
-    const servicePrice2 = 1500;
-    return servicePrice1 + servicePrice2; 
+    let sum = 0;
+    
+    // Запрашиваем 2 услуги
+    const servicePrice1 = getNumberInput("Первая дополнительная услуга: Сколько это будет стоить?");
+    const servicePrice2 = getNumberInput("Вторая дополнительная услуга: Сколько это будет стоить?");
+    
+    sum = servicePrice1 + servicePrice2;
+    return sum;
 };
 const allServicePrices = getAllServicePrices();
 
 
-// 2)
 function getFullPrice() {
     return screenPrice + allServicePrices;
 }
 const fullPrice = getFullPrice();
 
 
-// 3)
 function getTitle() {
     const trimmedTitle = title.trim(); 
     if (!trimmedTitle) return "";
-    return trimmedTitle[0].toUpperCase() + trimmedTitle.slice(1).toLowerCase();
+    return trimmedTitle.toUpperCase() + trimmedTitle.slice(1).toLowerCase();
 }
 
 
-// 4)
 function getServicePercentPrices() {
     const rollbackAmount = fullPrice * (rollback / 100);
     return fullPrice - rollbackAmount;
@@ -45,18 +66,11 @@ function getServicePercentPrices() {
 const servicePercentPrice = getServicePercentPrices();
 
 
-// 5)
-
-// - вызовы функции showTypeOf
+// 4)
 showTypeOf(title);
 showTypeOf(fullPrice);
 showTypeOf(adaptive);
 
-// - вывод строки с типами экранов для разработки screens
 console.log("Экраны для разработки:", screens);
-
-// - сообщение о скидке пользователю (вызовы функции getRollbackMessage)
 console.log(getRollbackMessage(fullPrice));
-
-// - стоимость за вычетом процента отката посреднику
 console.log("Стоимость за вычетом процента отката посреднику:", servicePercentPrice);
