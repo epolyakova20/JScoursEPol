@@ -11,7 +11,6 @@ const getRollbackMessage = (price) => {
     return "Скидка не предусмотрена";
 };
 
-
 // === ВЫПОЛНЕНИЕ ЗАДАНИЙ ===
 
 // 1)
