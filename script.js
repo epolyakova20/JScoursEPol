@@ -1,52 +1,63 @@
+const title = "   КаЛьКулятор Верстки";
+const screens = "Шапка, Контент, Футер";
+const screenPrice = 5000;
+const adaptive = true;
+const rollback = 10; // процент отката посреднику
+
+const showTypeOf = (variable) => console.log(typeof variable);
+const getRollbackMessage = (price) => {
+    if (price >= 30000) return "Даем скидку в 10%";
+    if (price >= 15000) return "Даем скидку в 5%";
+    return "Скидка не предусмотрена";
+};
+
+
+// === ВЫПОЛНЕНИЕ ЗАДАНИЙ ===
+
+// 1)
+const getAllServicePrices = function() {
+    const servicePrice1 = 1000; 
+    const servicePrice2 = 1500;
+    return servicePrice1 + service2Price;
+};
+const allServicePrices = getAllServicePrices();
+
+
+// 2)
+function getFullPrice() {
+    return screenPrice + allServicePrices;
+}
+const fullPrice = getFullPrice();
+
 
 // 3)
-let title = prompt("Как называется ваш проект?");
-
-// 4)
-let screens = prompt("Какие типы экранов нужно разработать?", "Простые, Сложные, Интерактивные");
-
-// 5)
-let screenPrice = +prompt("Сколько будет стоить данная работа?", "12000");
-
-// 6)
-let adaptive = confirm("Нужен ли адаптив на сайте?");
-
-// 7)
-let service1 = prompt("Какой первый дополнительный тип услуги нужен?");
-let servicePrice1 = +prompt("Сколько это будет стоить?");
-
-let service2 = prompt("Какой второй дополнительный тип услуги нужен?");
-let servicePrice2 = +prompt("Сколько это будет стоить?");
-
-// Переменная отката
-let rollback = 10; 
-
-// 8)
-let fullPrice = screenPrice + servicePrice1 + servicePrice2;
-
-// Расчёт суммы отката
-let rollbackAmount = fullPrice * (rollback / 100);
-
-// 9)
-let servicePercentPrice = Math.ceil(fullPrice - rollbackAmount);
-console.log("Итоговая стоимость за вычетом отката (округлённая):", servicePercentPrice);
-
-// 10)
-if (fullPrice > 30000) {
-    console.log("Даем скидку в 10%");
-} else if (fullPrice > 15000 && fullPrice <= 30000) {
-    console.log("Даем скидку в 5%");
-} else if (fullPrice > 0 && fullPrice <= 15000) {
-    console.log("Скидка не предусмотрена");
-} else if (fullPrice === 0) {
-    console.log("Стоимость равна нулю, скидка не предусмотрена");
-} else {
-    console.log("Что-то пошло не так");
+function getTitle() {
+    const trimmedTitle = title.trim(); 
+    if (!trimmedTitle) return "";
+    return trimmedTitle[0].toUpperCase() + trimmedTitle.slice(1).toLowerCase();
 }
 
-console.log("Тип данных title:", typeof title);
-console.log("Тип данных fullPrice:", typeof fullPrice);
-console.log("Тип данных adaptive:", typeof adaptive);
-console.log("Длина строки screens:", screens ? screens.length : 0);
-console.log(`Стоимость верстки экранов ${screenPrice} рублей`);
-console.log(`Стоимость разработки сайта ${fullPrice} рублей`);
+
+// 4)
+function getServicePercentPrices() {
+    const rollbackAmount = fullPrice * (rollback / 100);
+    return fullPrice - rollbackAmount;
+}
+const servicePercentPrice = getServicePercentPrices();
+
+
+// 5)
+
+// - вызовы функции showTypeOf
+showTypeOf(title);
+showTypeOf(fullPrice);
+showTypeOf(adaptive);
+
+// - вывод строки с типами экранов для разработки screens
+console.log("Экраны для разработки:", screens);
+
+// - сообщение о скидке пользователю (вызовы функции getRollbackMessage)
+console.log(getRollbackMessage(fullPrice));
+
+// - стоимость за вычетом процента отката посреднику
+console.log("Стоимость за вычетом процента отката посреднику:", servicePercentPrice);
