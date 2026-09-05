@@ -1,5 +1,5 @@
 const appData = {
-    title: "КаЛьКулятор Верстки",
+    title: "Калькулятор Верстки",
     screens: "Шапка, Контент, Футер",
     adaptive: true,
     rollback: 10,
