@@ -1,45 +1,90 @@
-// ==================== 1) ПОЛУЧЕНИЕ ЭЛЕМЕНТОВ СО СТРАНИЦЫ ====================
+// ==================== 1) ПОЛУЧЕНИЕ DOM-ЭЛЕМЕНТОВ ====================
+const startBtn = document.getElementsByClassName('handler_btn')[0]; 
+const resetBtn = document.getElementsByClassName('handler_btn')[1]; 
+const screenSelect = document.querySelector('.screen select');       
+const screenInput = document.querySelector('.screen input');         
+const rollbackInput = document.querySelector('.rollback input[type="range"]'); 
+const rollbackValue = document.querySelector('.rollback .range-value');       
 
-// 1. Заголовок "Калькулятор верстки" (берём первый [0] элемент из найденной коллекции)
-const mainTitle = document.getElementsByTagName('h1')[0];
+// Находим чекбоксы дополнительных услуг
+const checkboxPercent = document.querySelectorAll('.other-items.percent input[type="checkbox"]');
+const checkboxNumber = document.querySelectorAll('.other-items.number input[type="checkbox"]');
 
-// 2. Кнопки "Рассчитать" и "Сброс" (берём по отдельности из коллекции по индексам)
-const startBtn = document.getElementsByClassName('handler_btn')[0];
-const resetBtn = document.getElementsByClassName('handler_btn')[1];
-
-// 3. Кнопка "+" под выпадающим списком типов экранов
-const screenBtn = document.querySelector('.screen-btn');
-
-// 4. Элементы other-items, разделенные по классам percent и number
-const otherItemsPercent = document.querySelectorAll('.other-items.percent');
-const otherItemsNumber = document.querySelectorAll('.other-items.number');
-
-// 5. Input type=range через его родителя .rollback
-const rollbackInput = document.querySelector('.rollback input[type="range"]');
-
-// 6. Span с классом range-value через его родителя .rollback
-const rollbackValue = document.querySelector('.rollback .range-value');
-
-// 7. Все правые инпуты итоговых значений по отдельности из коллекции (всего их 5)
+// Правые итоговые инпуты
 const totalInputPrice = document.getElementsByClassName('total-input')[0];
 const totalInputScreensCount = document.getElementsByClassName('total-input')[1];
 const totalInputCountOther = document.getElementsByClassName('total-input')[2];
 const totalInputFullPrice = document.getElementsByClassName('total-input')[3];
 const totalInputServicePercent = document.getElementsByClassName('total-input')[4];
 
-// 8. Все блоки с классом screen в изменяемую переменную (let)
-let screenBlocks = document.querySelectorAll('.screen');
+// ==================== 2) ГЛАВНЫЙ ОБЪЕКТ ПРИЛОЖЕНИЯ ====================
+const appData = {
+    screenPrice: 0,
+    screensCount: 0,
+    priceOther: 0, // Стоимость дополнительных услуг
+    rollback: 0,
+    fullPrice: 0,
+    servicePercentPrice: 0,
 
+    start: function() {
+        this.readValues(); 
+        this.addPrices();  
+        this.getServicePercentPrice(); 
+        this.showResult(); 
+    },
 
-// ==================== ВЫВОД В КОНСОЛЬ ДЛЯ ПРОВЕРКИ ====================
+    readValues: function() {
+        this.screenPrice = +screenSelect.value;
+        this.screensCount = +screenInput.value;
+    },
 
-console.log("Заголовок h1:", mainTitle);
-console.log("Кнопка Рассчитать:", startBtn);
-console.log("Кнопка Сброс:", resetBtn);
-console.log("Кнопка плюс:", screenBtn);
-console.log("Элементы с процентами:", otherItemsPercent);
-console.log("Элементы с числами:", otherItemsNumber);
-console.log("Ползунок range:", rollbackInput);
-console.log("Текст значения range:", rollbackValue);
-console.log("Итоговые поля (пример одного):", totalInputFullPrice);
-console.log("Блоки экранов (let):", screenBlocks);
+    // Метод калькуляции (теперь считает и доп. услуги!)
+    addPrices: function() {
+        // 1. Считаем чистую стоимость экранов
+        this.fullPrice = this.screenPrice * this.screensCount;
+        this.priceOther = 0; // Сбрасываем перед каждым расчётом
+
+        // 2. Перебираем чекбоксы с фиксированной ценой (рубли)
+        checkboxNumber.forEach(function(checkbox) {
+            if (checkbox.checked) {
+                // Ищем инпут с ценой, который стоит рядом с чекбоксом, и берём его значение
+                const priceInput = checkbox.closest('.other-items').querySelector('input[type="text"]');
+                appData.priceOther += +priceInput.value;
+            }
+        });
+
+        // 3. Перебираем чекбоксы с процентами (адаптив)
+        checkboxPercent.forEach(function(checkbox) {
+            if (checkbox.checked) {
+                const percentInput = checkbox.closest('.other-items').querySelector('input[type="text"]');
+                // Процент берётся от базовой стоимости вёрстки экранов (this.fullPrice)
+                const percentAmount = appData.fullPrice * (+percentInput.value / 100);
+                appData.priceOther += percentAmount;
+            }
+        });
+
+        // 4. Прибавляем доп. услуги к итоговой стоимости
+        this.fullPrice += this.priceOther;
+    },
+
+    getServicePercentPrice: function() {
+        this.rollback = +rollbackInput.value; 
+        const rollbackAmount = this.fullPrice * (this.rollback / 100);
+        this.servicePercentPrice = Math.ceil(this.fullPrice - rollbackAmount);
+    },
+
+    showResult: function() {
+        totalInputPrice.value = this.screenPrice;
+        totalInputScreensCount.value = this.screensCount;
+        totalInputCountOther.value = this.priceOther; // Выводим стоимость доп. услуг!
+        totalInputFullPrice.value = this.fullPrice;
+        totalInputServicePercent.value = this.servicePercentPrice;
+    }
+};
+
+// ==================== 3) НАЗНАЧЕНИЕ СЛУШАТЕЛЕЙ СОБЫТИЙ ====================
+startBtn.addEventListener('click', appData.start.bind(appData));
+
+rollbackInput.addEventListener('input', function(event) {
+    rollbackValue.textContent = event.target.value + '%';
+});
