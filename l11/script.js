@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Метод append() переносит уже существующий элемент в конец контейнера.
     // (Индексы в массиве books зависят от их исходного положения в HTML, 
     // обычно порядок такой: Книга 1 — это books[0] или books[1] и т.д. Поменяйте индексы, если порядок не совпадет)
-    booksContainer.append(books[0]); // Книга 1 (замените индекс на нужный, если порядок отличается)
-    booksContainer.append(books[1]); // Книга 2
+    booksContainer.append(books[1]); // Книга 1 (замените индекс на нужный, если порядок отличается)
+    booksContainer.append(books[0]); // Книга 2
     booksContainer.append(books[2]); // Книга 3
     booksContainer.append(books[3]); // Книга 4
     booksContainer.append(books[4]); // Книга 5
