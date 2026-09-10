@@ -6,11 +6,11 @@ const screenInput = document.querySelector('.screen input');
 const rollbackInput = document.querySelector('.rollback input[type="range"]'); 
 const rollbackValue = document.querySelector('.rollback .range-value');       
 
-// Находим чекбоксы дополнительных услуг
+
 const checkboxPercent = document.querySelectorAll('.other-items.percent input[type="checkbox"]');
 const checkboxNumber = document.querySelectorAll('.other-items.number input[type="checkbox"]');
 
-// Правые итоговые инпуты
+
 const totalInputPrice = document.getElementsByClassName('total-input')[0];
 const totalInputScreensCount = document.getElementsByClassName('total-input')[1];
 const totalInputCountOther = document.getElementsByClassName('total-input')[2];
@@ -21,7 +21,7 @@ const totalInputServicePercent = document.getElementsByClassName('total-input')[
 const appData = {
     screenPrice: 0,
     screensCount: 0,
-    priceOther: 0, // Стоимость дополнительных услуг
+    priceOther: 0, 
     rollback: 0,
     fullPrice: 0,
     servicePercentPrice: 0,
@@ -38,32 +38,25 @@ const appData = {
         this.screensCount = +screenInput.value;
     },
 
-    // Метод калькуляции (теперь считает и доп. услуги!)
     addPrices: function() {
-        // 1. Считаем чистую стоимость экранов
         this.fullPrice = this.screenPrice * this.screensCount;
-        this.priceOther = 0; // Сбрасываем перед каждым расчётом
+        this.priceOther = 0;
 
-        // 2. Перебираем чекбоксы с фиксированной ценой (рубли)
         checkboxNumber.forEach(function(checkbox) {
             if (checkbox.checked) {
-                // Ищем инпут с ценой, который стоит рядом с чекбоксом, и берём его значение
                 const priceInput = checkbox.closest('.other-items').querySelector('input[type="text"]');
                 appData.priceOther += +priceInput.value;
             }
         });
 
-        // 3. Перебираем чекбоксы с процентами (адаптив)
         checkboxPercent.forEach(function(checkbox) {
             if (checkbox.checked) {
                 const percentInput = checkbox.closest('.other-items').querySelector('input[type="text"]');
-                // Процент берётся от базовой стоимости вёрстки экранов (this.fullPrice)
                 const percentAmount = appData.fullPrice * (+percentInput.value / 100);
                 appData.priceOther += percentAmount;
             }
         });
 
-        // 4. Прибавляем доп. услуги к итоговой стоимости
         this.fullPrice += this.priceOther;
     },
 
@@ -76,13 +69,12 @@ const appData = {
     showResult: function() {
         totalInputPrice.value = this.screenPrice;
         totalInputScreensCount.value = this.screensCount;
-        totalInputCountOther.value = this.priceOther; // Выводим стоимость доп. услуг!
+        totalInputCountOther.value = this.priceOther;
         totalInputFullPrice.value = this.fullPrice;
         totalInputServicePercent.value = this.servicePercentPrice;
     }
 };
 
-// ==================== 3) НАЗНАЧЕНИЕ СЛУШАТЕЛЕЙ СОБЫТИЙ ====================
 startBtn.addEventListener('click', appData.start.bind(appData));
 
 rollbackInput.addEventListener('input', function(event) {
