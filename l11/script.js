@@ -1,39 +1,36 @@
-// Ждем полной загрузки DOM-дерева, чтобы скрипт точно нашел все элементы
 document.addEventListener('DOMContentLoaded', () => {
 
     // === 1. ВОССТАНОВИТЬ ПОРЯДОК КНИГ ===
-    // Находим контейнер, в котором лежат все книги, и сами книги
     const booksContainer = document.querySelector('.books');
     const books = document.querySelectorAll('.book');
 
-    // Расставляем книги по порядку (от 1 до 6). 
-    // Метод append() переносит уже существующий элемент в конец контейнера.
-    // (Индексы в массиве books зависят от их исходного положения в HTML, 
-    // обычно порядок такой: Книга 1 — это books[0] или books[1] и т.д. Поменяйте индексы, если порядок не совпадет)
-    booksContainer.append(books[1]); // Книга 1 (замените индекс на нужный, если порядок отличается)
-    booksContainer.append(books[0]); // Книга 2
-    booksContainer.append(books[2]); // Книга 3
-    booksContainer.append(books[3]); // Книга 4
-    booksContainer.append(books[4]); // Книга 5
-    booksContainer.append(books[5]); // Книга 6
+    const book1 = books[1]; 
+    const book2 = books[0]; 
+    const book3 = books[4]; 
+    const book4 = books[3]; 
+    const book5 = books[5]; 
+    const book6 = books[2]; 
+
+    booksContainer.append(book1);
+    booksContainer.append(book2);
+    booksContainer.append(book3);
+    booksContainer.append(book4);
+    booksContainer.append(book5);
+    booksContainer.append(book6);
 
 
     // === 2. ЗАМЕНИТЬ КАРТИНКУ ЗАДНЕГО ФОНА ===
-    // Меняем свойство backgroundImage у тега body на другую картинку (например, wall.jpg или bg.jpg)
-    // Посмотрите точное название второго файла в вашей папке image
     document.body.style.backgroundImage = 'url("./image/open_book.jpg")';
 
 
     // === 3. ИСПРАВИТЬ ЗАГОЛОВОК В КНИГЕ 3 ===
-    // Находим заголовок третьей книги (обычно это тег <a> или <h2> внутри книги)
-    const book3Title = books[2].querySelector('a'); // или 'h2', проверьте в DevTools
+    const book3Title = book3.querySelector('a');
     if (book3Title) {
         book3Title.textContent = "Книга 3. this и Прототипы Объектов";
     }
 
 
     // === 4. УДАЛИТЬ РЕКЛАМУ СО СТРАНИЦЫ ===
-    // Находим блок рекламы по его классу (обычно .adv или .advertising) и удаляем его
     const advBlock = document.querySelector('.adv');
     if (advBlock) {
         advBlock.remove();
@@ -41,29 +38,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // === 5. ВОССТАНОВИТЬ ПОРЯДОК ГЛАВ ВО ВТОРОЙ И ПЯТОЙ КНИГЕ ===
-    // --- Восстановление глав во 2-й книге ---
-    const book2Chapters = books[1].querySelectorAll('li');
-    const book2List = books[1].querySelector('ul');
-    // Используем append() или insertBefore(), чтобы расставить запутавшиеся li по местам
-    // Пример переноса: book2List.append(book2Chapters[индекс]);
+    const book2List = book2.querySelector('ul');
+    const book2Chapters = book2List.querySelectorAll('li');
+    
+    book2List.append(book2Chapters[0]);  // Введение
+    book2List.append(book2Chapters[1]);  // Предисловие
+    book2List.append(book2Chapters[2]);  // Глава 1
+    book2List.append(book2Chapters[5]);  // Глава 2 
+    book2List.append(book2Chapters[7]);  // Глава 3 
+    book2List.append(book2Chapters[3]);  // Глава 4
+    book2List.append(book2Chapters[4]);  // Глава 5
+    book2List.append(book2Chapters[6]);  // Глава 6
+    book2List.append(book2Chapters[8]);  // Приложение A
+    book2List.append(book2Chapters[9]);  // Приложение B
+    book2List.append(book2Chapters[10]); // Приложение C
+    book2List.append(book2Chapters[11]); // Приложение D
+
+    const book5List = book5.querySelector('ul');
+    const book5Chapters = book5List.querySelectorAll('li');
+    
+    book5List.append(book5Chapters[0]); // Введение
+    book5List.append(book5Chapters[1]); // Предисловие
+    book5List.append(book5Chapters[7]); // Глава 1
+    book5List.append(book5Chapters[3]); // Глава 2
+    book5List.append(book5Chapters[4]); // Глава 3
+    book5List.append(book5Chapters[2]); // Глава 4
+    book5List.append(book5Chapters[5]); // Глава 5
+    book5List.append(book5Chapters[6]); // Глава 6
 
 
-    // --- Восстановление глав во 5-й книге ---
-    const book5Chapters = books[4].querySelectorAll('li');
-    const book5List = books[4].querySelector('ul');
-    // Расставляем li по местам для 5-й книги
+    // === 6. В ШЕСТОЙ КНИГЕ ДОБАВИТЬ ГЛAВУ "Глава 8: За пределами ES6" ===
+    const book6Title = book6.querySelector('a');
+    if (book6Title) {
+        book6Title.textContent = "Книга 6. ES6 и не только";
+    }
 
+    const book6List = book6.querySelector('ul');
+    const book6Chapters = book6List.querySelectorAll('li');
 
-    // === 6. В ШЕСТОЙ КНИГЕ ДОБАВИТЬ НОВУЮ ГЛAВУ ===
-    const book6List = books[5].querySelector('ul');
-    const book6Chapters = books[5].querySelectorAll('li');
-
-    // Создаем новый элемент списка
     const newChapter = document.createElement('li');
     newChapter.textContent = 'Глава 8: За пределами ES6';
 
-    // Вставляем её в правильное место (например, перед Приложением, которое обычно является последним li)
-    // Метод insertBefore(что_вставляем, перед_каким_элементом)
-    book6List.insertBefore(newChapter, book6Chapters[book6Chapters.length - 1]);
+    book6List.insertBefore(newChapter, book6Chapters[7]);
 
 });
