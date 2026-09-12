@@ -27,7 +27,6 @@ const appData = {
     fullPrice: 0,
     servicePercentPrice: 0,
 
-    // Методы объекта пишем в обычном стиле (не стрелочные!), используем строго this (Пункт 1 и 2)
     start: function() {
         if (screenSelect.value === '' || screenInput.value.trim() === '') {
             alert('Пожалуйста, выберите тип экрана и введите его количество!');
@@ -38,7 +37,7 @@ const appData = {
         this.readValues(); 
         this.addPrices();  
         this.showResult(); 
-        this.blockInputs(); // Вызываем блокировку после успешного расчета (Пункт 3)
+        this.blockInputs();
     },
 
     addScreens: function() {
@@ -58,10 +57,9 @@ const appData = {
         this.priceOther = 0;
         this.screensCount = 0;
 
-        // Внутри методов тоже используем обычные функции, чтобы не терять контекст this, либо привязываем его
         this.screens.forEach(function(screenItem) {
             this.screensCount += screenItem.count;
-        }, this); // Привязали контекст через второй аргумент forEach
+        }, this);
 
         checkboxNumber.forEach(function(checkbox) {
             if (checkbox.checked) {
@@ -85,51 +83,41 @@ const appData = {
         this.servicePercentPrice = Math.ceil(this.fullPrice - rollbackAmount);
     },
 
-    // Вспомогательный метод для блокировки элементов (Пункт 3)
     blockInputs: function() {
-        // Блокируем главный select и input количества
         screenSelect.disabled = true;
         screenInput.disabled = true;
 
-        // Перебираем и блокируем текстовые инпуты и чекбоксы в дополнительных услугах
         const allLeftInputs = document.querySelectorAll('.calc-left input[type="text"], .calc-left input[type="checkbox"]');
         allLeftInputs.forEach(input => input.disabled = true);
 
-        // Переключаем видимость кнопок Рассчитать и Сброс
         startBtn.style.display = 'none';
         resetBtn.style.display = 'block';
     },
 
-    // 4) Метод reset() для возвращения программы в исходное состояние
     reset: function() {
-        // 1. Кнопка Сброс должна замениться на кнопку Рассчитать
         resetBtn.style.display = 'none';
         startBtn.style.display = 'block';
 
-        // 3. Все input[type=text] и select должны быть разблокированы
         screenSelect.disabled = false;
         screenInput.disabled = false;
 
         const allLeftInputs = document.querySelectorAll('.calc-left input[type="text"], .calc-left input[type="checkbox"]');
         allLeftInputs.forEach(input => {
             input.disabled = false;
-            if (input.type === 'checkbox') input.checked = false; // Сбрасываем чекбоксы
+            if (input.type === 'checkbox') input.checked = false; 
         });
 
-        // 2. Должны быть убраны значения полей ввода левой и правой части
         screenSelect.value = '';
         screenInput.value = '';
         rollbackInput.value = 0;
         rollbackValue.textContent = '0%';
 
-        // Очищаем правые инпуты вывода результатов
         totalInputPrice.value = 0;
         totalInputScreensCount.value = 0;
         totalInputCountOther.value = 0;
         totalInputFullPrice.value = 0;
         totalInputServicePercent.value = 0;
 
-        // Сбрасываем свойства самого объекта
         this.screens = [];
         this.screenPrice = 0;
         this.screensCount = 0;
@@ -150,8 +138,6 @@ const appData = {
 
 // ==================== 3) СЛУШАТЕЛИ СОБЫТИЙ ====================
 
-// Переводим внешние обработчики на стрелочные функции (Пункт 1)
-// Привязываем контекст appData, чтобы методы корректно работали (Пункт 2)
 startBtn.addEventListener('click', () => appData.start());
 resetBtn.addEventListener('click', () => appData.reset());
 
