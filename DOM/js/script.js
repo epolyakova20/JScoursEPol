@@ -1,5 +1,4 @@
 // ==================== 1) ПОЛУЧЕНИЕ DOM-ЭЛЕМЕНТОВ ====================
-// Добавляем индексы [0] и, чтобы получить конкретные кнопки из коллекции
 const startBtn = document.getElementsByClassName('handler_btn')[0]; 
 const resetBtn = document.getElementsByClassName('handler_btn')[1]; 
 
@@ -11,7 +10,6 @@ const rollbackValue = document.querySelector('.rollback .range-value');
 const checkboxPercent = document.querySelectorAll('.other-items.percent input[type="checkbox"]');
 const checkboxNumber = document.querySelectorAll('.other-items.number input[type="checkbox"]');
 
-// Точно так же добавляем индексы для полей вывода результатов справа
 const totalInputPrice = document.getElementsByClassName('total-input')[0];
 const totalInputScreensCount = document.getElementsByClassName('total-input')[1];
 const totalInputCountOther = document.getElementsByClassName('total-input')[2];
@@ -40,7 +38,7 @@ const appData = {
         this.readValues(); 
         this.addPrices();  
         this.showResult(); 
-        this.blockInputs(); // Блокируем элементы после расчета (Пункт 3)
+        this.blockInputs();
     },
 
     addScreens: function() {
