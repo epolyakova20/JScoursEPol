@@ -1,6 +1,8 @@
 // ==================== 1) ПОЛУЧЕНИЕ DOM-ЭЛЕМЕНТОВ ====================
+// Добавляем индексы [0] и, чтобы получить конкретные кнопки из коллекции
 const startBtn = document.getElementsByClassName('handler_btn')[0]; 
 const resetBtn = document.getElementsByClassName('handler_btn')[1]; 
+
 const screenSelect = document.querySelector('.screen select');       
 const screenInput = document.querySelector('.screen input');         
 const rollbackInput = document.querySelector('.rollback input[type="range"]'); 
@@ -9,6 +11,7 @@ const rollbackValue = document.querySelector('.rollback .range-value');
 const checkboxPercent = document.querySelectorAll('.other-items.percent input[type="checkbox"]');
 const checkboxNumber = document.querySelectorAll('.other-items.number input[type="checkbox"]');
 
+// Точно так же добавляем индексы для полей вывода результатов справа
 const totalInputPrice = document.getElementsByClassName('total-input')[0];
 const totalInputScreensCount = document.getElementsByClassName('total-input')[1];
 const totalInputCountOther = document.getElementsByClassName('total-input')[2];
@@ -37,7 +40,7 @@ const appData = {
         this.readValues(); 
         this.addPrices();  
         this.showResult(); 
-        this.blockInputs();
+        this.blockInputs(); // Блокируем элементы после расчета (Пункт 3)
     },
 
     addScreens: function() {
@@ -57,9 +60,10 @@ const appData = {
         this.priceOther = 0;
         this.screensCount = 0;
 
+        // Используем this для обращения к свойствам объекта (Пункт 2)
         this.screens.forEach(function(screenItem) {
             this.screensCount += screenItem.count;
-        }, this);
+        }, this); 
 
         checkboxNumber.forEach(function(checkbox) {
             if (checkbox.checked) {
@@ -83,6 +87,7 @@ const appData = {
         this.servicePercentPrice = Math.ceil(this.fullPrice - rollbackAmount);
     },
 
+    // Метод блокировки элементов (Пункт 3)
     blockInputs: function() {
         screenSelect.disabled = true;
         screenInput.disabled = true;
@@ -90,10 +95,12 @@ const appData = {
         const allLeftInputs = document.querySelectorAll('.calc-left input[type="text"], .calc-left input[type="checkbox"]');
         allLeftInputs.forEach(input => input.disabled = true);
 
+        // Переключаем видимость кнопок
         startBtn.style.display = 'none';
         resetBtn.style.display = 'block';
     },
 
+    // 4) Метод reset() для возвращения программы в исходное состояние
     reset: function() {
         resetBtn.style.display = 'none';
         startBtn.style.display = 'block';
@@ -137,7 +144,7 @@ const appData = {
 };
 
 // ==================== 3) СЛУШАТЕЛИ СОБЫТИЙ ====================
-
+// Внешние обработчики переведены на стрелочные функции (Пункт 1)
 startBtn.addEventListener('click', () => appData.start());
 resetBtn.addEventListener('click', () => appData.reset());
 
