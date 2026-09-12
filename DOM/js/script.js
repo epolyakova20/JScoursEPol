@@ -16,6 +16,7 @@ const totalInputCountOther = document.getElementsByClassName('total-input')[2];
 const totalInputFullPrice = document.getElementsByClassName('total-input')[3];
 const totalInputServicePercent = document.getElementsByClassName('total-input')[4];
 
+
 let screens = document.querySelectorAll('.screen');
 
 // ==================== 2) ГЛАВНЫЙ ОБЪЕКТ ПРИЛОЖЕНИЯ ====================
@@ -42,7 +43,8 @@ const appData = {
     },
 
     addScreens: function() {
-        this.screens = []; 
+        this.screens = [];
+
         this.screens.push({
             price: +screenSelect.value,
             count: +screenInput.value
@@ -58,7 +60,6 @@ const appData = {
         this.priceOther = 0;
         this.screensCount = 0;
 
-        // Используем this для обращения к свойствам объекта (Пункт 2)
         this.screens.forEach(function(screenItem) {
             this.screensCount += screenItem.count;
         }, this); 
@@ -85,7 +86,7 @@ const appData = {
         this.servicePercentPrice = Math.ceil(this.fullPrice - rollbackAmount);
     },
 
-    // Метод блокировки элементов (Пункт 3)
+
     blockInputs: function() {
         screenSelect.disabled = true;
         screenInput.disabled = true;
@@ -93,12 +94,11 @@ const appData = {
         const allLeftInputs = document.querySelectorAll('.calc-left input[type="text"], .calc-left input[type="checkbox"]');
         allLeftInputs.forEach(input => input.disabled = true);
 
-        // Переключаем видимость кнопок
+
         startBtn.style.display = 'none';
         resetBtn.style.display = 'block';
     },
 
-    // 4) Метод reset() для возвращения программы в исходное состояние
     reset: function() {
         resetBtn.style.display = 'none';
         startBtn.style.display = 'block';
@@ -142,7 +142,6 @@ const appData = {
 };
 
 // ==================== 3) СЛУШАТЕЛИ СОБЫТИЙ ====================
-// Внешние обработчики переведены на стрелочные функции (Пункт 1)
 startBtn.addEventListener('click', () => appData.start());
 resetBtn.addEventListener('click', () => appData.reset());
 
